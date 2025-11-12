@@ -313,6 +313,10 @@ impl<'a> LookupBuilder<'a> {
         // Then lookup in the given theme
         THEMES
             .get(self.theme)
+            .or_else(|| {
+                let normalized = self.theme.replace(' ', "-");
+                THEMES.get(&normalized)
+            })
             .or_else(|| THEMES.get("hicolor"))
             .and_then(|icon_themes| {
                 let icon = icon_themes
