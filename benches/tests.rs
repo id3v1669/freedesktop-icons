@@ -1,5 +1,5 @@
+use freedesktop_icons::lookup;
 use gtk4::{IconLookupFlags, IconTheme, TextDirection};
-use nix_freedesktop_icons::lookup;
 use speculoos::prelude::*;
 
 #[test]

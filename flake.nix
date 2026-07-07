@@ -1,5 +1,5 @@
 {
-  description = "Crosshair";
+  description = "freedesktop icons lookup";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -20,9 +20,11 @@
         overlays = [];
       };
   in {
-    devShells = eachSystem (system: let pkgs = pkgsFor system; in {
+    devShells = eachSystem (system: let
+      pkgs = pkgsFor system;
+    in {
       default = pkgs.mkShell {
-        name = "nix-freedesktop-icons-dev-shell";
+        name = "freedesktop-icons-dev-shell";
         nativeBuildInputs = with pkgs; [
           # Compilers
           cargo

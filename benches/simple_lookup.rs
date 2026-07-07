@@ -1,8 +1,8 @@
 use criterion::{
     AxisScale, BenchmarkId, Criterion, PlotConfiguration, criterion_group, criterion_main,
 };
+use freedesktop_icons::lookup;
 use gtk4::{IconLookupFlags, IconTheme, TextDirection};
-use nix_freedesktop_icons::lookup;
 use std::hint::black_box;
 
 pub fn bench_lookups(c: &mut Criterion) {
