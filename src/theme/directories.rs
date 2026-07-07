@@ -28,29 +28,28 @@ impl Directory<'_> {
     }
 
     pub fn directory_size_distance(&self, size: u16, scale: u16) -> i16 {
-        let scale = scale as i16;
-        let scaled_requested_size = size as i16 * scale;
+        let scaled_requested_size = size as i16 * scale as i16;
 
         match self.type_ {
-            DirectoryType::Fixed => self.size * self.scale - scaled_requested_size,
+            DirectoryType::Fixed => (self.size * self.scale - scaled_requested_size).abs(),
             DirectoryType::Scalable => {
                 let min_scaled_size = self.minsize * self.scale;
+                let max_scaled_size = self.maxsize * self.scale;
                 if scaled_requested_size < min_scaled_size {
                     min_scaled_size - scaled_requested_size
+                } else if scaled_requested_size > max_scaled_size {
+                    scaled_requested_size - max_scaled_size
                 } else {
-                    let max_scaled_size = self.maxsize * self.scale;
-                    if scaled_requested_size < max_scaled_size {
-                        scaled_requested_size - max_scaled_size
-                    } else {
-                        0
-                    }
+                    0
                 }
             }
             DirectoryType::Threshold => {
-                if scaled_requested_size < (self.size - self.threshold) * scale {
-                    self.minsize * self.scale - scaled_requested_size
-                } else if scaled_requested_size > (self.size + self.threshold) * scale {
-                    scaled_requested_size - self.maxsize * self.scale
+                let min_scaled_size = self.minsize * self.scale;
+                let max_scaled_size = self.maxsize * self.scale;
+                if scaled_requested_size < (self.size - self.threshold) * self.scale {
+                    min_scaled_size - scaled_requested_size
+                } else if scaled_requested_size > (self.size + self.threshold) * self.scale {
+                    scaled_requested_size - max_scaled_size
                 } else {
                     0
                 }

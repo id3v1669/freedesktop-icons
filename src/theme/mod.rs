@@ -80,13 +80,10 @@ impl Theme {
         self.get_all_directories(file)
             .fold(Vec::<(&'a str, i16)>::new(), |mut sorted, directory| {
                 let distance = directory.directory_size_distance(size, scale);
-                if distance < i16::MAX {
-                    let a = distance.abs();
-                    let pos = sorted
-                        .binary_search_by(|(_, b)| b.cmp(&a))
-                        .unwrap_or_else(|pos| pos);
-                    sorted.insert(pos, (directory.name, a));
-                }
+                let pos = sorted
+                    .binary_search_by(|(_, b)| b.cmp(&distance))
+                    .unwrap_or_else(|pos| pos);
+                sorted.insert(pos, (directory.name, distance));
                 sorted
             })
             .into_iter()
